@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+<script src="../../static/popup.js"></script>
+
+{% block header %}
+    <h1>{% block title %}Add Text{% endblock %}</h1>
+{% endblock %}
+
+{% block buttons %}
+    <ul>
+        <li><a href="{{ url_for("dict.index") }}" class="button">View Dictionary</a></li>
+        <li><a href="{{ url_for('dict.add_word') }}" class="button">Add word</a></li>
+        <li>
+            <div class="popup" onclick="myFunction()">Help
+                <span class="popuptext" id="myPopup">
+                    <h3>Add words by text - Help</h3>
+                    <p>This is a page that allows the user to add new words to the dictionary
+                        along with the connections between them showing which words can form phrases together.<br>
+                    </p>
+                    <p><b>To do that, input a text into the textarea below and click on the "Add words" button.</b></p>
+                    <p>To go back to the main dictionary page with the list of all the words,
+                        click on the <b>"View dictionary"</b> button.</p>
+                    <p>You can also get to the main dictionary page by <b>clicking the header on top</b> of the page.</p>
+                    <p>To add a single new word to the dictionary click on the <b>"Add word"</b> button.</p>
+                </span>
+            </div>
+            <script src="../../static/popup.js"></script>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form class="main" method="post" style="display: flex; flex-direction: column;">
+        <label for="text">Text</label>
+        <textarea name="text" id="text">{{ request.form['text'] }}</textarea>
+        <input type="submit" value="Add words" style="width: 15%">
+    </form>
+{% endblock %}

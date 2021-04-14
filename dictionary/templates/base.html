@@ -1,0 +1,39 @@
+<!doctype html>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap");
+</style>
+
+<title>{% block title %}{% endblock %} - Dictionary for phrase formation</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<!-- links to log in/ register -->
+<nav>
+  <h1><a href="{{ url_for('index') }}">Dictionary for phrase formation</a></h1>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}" class="link">Log Out</a>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}" class="link">Register</a>
+      <li><a href="{{ url_for('auth.login') }}" class="link">Log In</a>
+    {% endif %}
+  </ul>
+</nav>
+
+<hr>
+
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  <nav>
+      {% block buttons %}{% endblock %}
+  </nav>
+  {% block content %}{% endblock %}
+</section>
+
+<script src="../static/popup.js"></script>

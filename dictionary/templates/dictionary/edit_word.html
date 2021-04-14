@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Edit word: "{{ word['name'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block buttons %}
+    <ul>
+        <li><a href="{{ url_for("dict.index") }}" class="button">View Dictionary</a></li>
+        <li><a href="{{ url_for('dict.add_phrase_word', word_id=word['id']) }}" class="button">Add phrase word</a></li>
+        <li>
+            <div class="popup" onclick="myFunction()">Help
+                <span class="popuptext" id="myPopup">
+                    <h3>Edit a word - Help</h3>
+                    <p>This is a page that allows the user to edit a particular word in the dictionary.<br>
+                        The user can change the word or delete it completely from the dictionary, as well as
+                        remove any words for phrase formation or phrases.</p>
+                    <p>To change the name of the word edit it in the textarea and click the <b>"Save"</b> button.</p>
+                    <p>To remove the connection with a phrase word or a phrase click the <b>"Delete"</b> button
+                        next to the necessary phrase word or phrase.</p>
+                    <p>To delete the word itself click the big <b>"Delete"</b> button at the bottom of the page.</p>
+                    <p>To view a word and its list of words for phrase formation, as well as some key phrases,
+                        <b>click on the phrase word</b>.</p>
+                    <p>To go back to the main dictionary page with the list of all the words,
+                        click on the <b>"View dictionary"</b> button.</p>
+                    <p>You can also get to the main dictionary page by <b>clicking the header on top</b> of the page.</p>
+                    <p>To add a new word that can form a phrase with this word to the dictionary
+                        or to form a connection with an existing word click the <b>"Add phrase word"</b> button.</p>
+                </span>
+            </div>
+            <script src="../../static/popup.js"></script>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form class="main" method="post">
+        <label for="word">Word:</label>
+        <input name="word" id="word" value="{{ request.form["word"] or word['name'] }}" required>
+        <input type="submit" value="Save">
+    </form>
+
+    <ul class="word">
+    {% for phrase_word in phrasewords %}
+        <li>
+        <form action="{{ url_for('dict.delete_phrase_word', word_id=word['id'], phrase_word_id=phrase_word['phraseWordId']) }}" method="post">
+            <a href="{{ url_for('dict.view_word', word_id=phrase_word['phraseWordId']) }}" class="link">{{ phrase_word['name'] }}</a>
+            <input class="delete" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+        </form></li>
+        <ul>
+            {% for phrase in phrases %}
+                    {% if phrase_word["name"] in phrase["name"] %}
+                        <li class="phrase">
+                        <form action="{{ url_for('dict.delete_phrase', word_id=word['id'], phrase_id=phrase['id']) }}" method="post" style="flex-direction: row;">
+                            {{ phrase["name"] }}
+                            <input class="delete" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+                        </form></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    {% endfor %}
+    </ul>
+
+    <form action="{{ url_for('dict.delete_word', word_id=word['id']) }}" method="post" style="margin-top: 10%">
+            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    </form>
+{% endblock %}

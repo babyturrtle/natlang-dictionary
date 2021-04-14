@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Add Word{% endblock %}</h1>
+{% endblock %}
+
+{% block buttons %}
+    <ul>
+        <li><a href="{{ url_for("dict.index") }}" class="button">View Dictionary</a></li>
+        <li><a href="{{ url_for('dict.add_from_text') }}" class="button">Add text</a></li>
+        <li>
+            <div class="popup" onclick="myFunction()">Help
+                <span class="popuptext" id="myPopup">
+                    <h3>Add word - Help</h3>
+                    <p>This is a page that allows the user to add a single new word to the dictionary.
+                    </p>
+                    <p><b>To do that, input a word into the textarea below and click on the "Add word" button.</b></p>
+                    <p>To go back to the main dictionary page with the list of all the words,
+                        click on the <b>"View dictionary"</b> button.</p>
+                    <p>You can also get to the main dictionary page by <b>clicking the header on top</b> of the page.</p>
+                    <p>To add new words, their connections and key phrases by text, click on the <b>"Add text"</b> button.</p>
+                </span>
+            </div>
+            <script src="../../static/popup.js"></script>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form class="main" method="post">
+        <label for="word">Word</label>
+        <input name="word" id="word" value="{{ request.form['word'] }}">
+        <input type="submit" value="Add word">
+    </form>
+{% endblock %}

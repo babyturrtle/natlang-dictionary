@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Dictionary{% endblock %}</h1>
+{% endblock %}
+
+{% block buttons %}
+    <ul>
+        <li><a href="{{ url_for('dict.add_from_text') }}" class="button">Add text</a></li>
+        <li><a href="{{ url_for('dict.add_word') }}" class="button">Add word</a></li>
+        <li>
+            <div class="popup" onclick="myFunction()">Help
+                <span class="popuptext" id="myPopup">
+                    <h3>Dictionary for phrase formation - Help</h3>
+                    <p>This dictionary can contain a list of words in alphabetical order.<br>
+                        The words store other words that can make up phrases together.<br>
+                        The user can input a text to add new words and their connections to the dictionary,
+                        as well as a single word.</p>
+                    <p>Before adding new words or editing the database the user is prompted to register or log in the system.<br>
+                        To do that click the <b>"Register"</b> button to create a new user or the <b>"Log In"</b> button to
+                        if the user information already exists in the system.</p>
+                    <p>To view a word and its list of words for phrase formation, as well as some key phrases,
+                        <b>click on the word</b>.</p>
+                    <p>To add new words, their connections and key phrases by text, click on the <b>"Add text"</b> button.</p>
+                    <p>To add a single new word to the dictionary click on the <b>"Add word"</b> button.</p>
+                </span>
+            </div>
+            <script src="../../static/popup.js"></script>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <ul class="word">
+        {% for word in words %}
+            <li><a href="{{ url_for('dict.view_word', word_id=word['id']) }}" class="link">{{ word['name'] }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

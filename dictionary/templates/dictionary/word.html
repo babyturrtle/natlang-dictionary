@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ word['name'] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block buttons %}
+    <ul>
+        <li><a href="{{ url_for("dict.index") }}" class="button">View Dictionary</a></li>
+        <li><a href="{{ url_for('dict.edit_word', word_id=word['id']) }}" class="button">Edit word</a></li>
+        <li>
+            <div class="popup" onclick="myFunction()">Help
+                <span class="popuptext" id="myPopup">
+                    <h3>Viewing a word - Help</h3>
+                    <p>This is a page that relates to a particular word in the dictionary.<br>
+                        It contains a list of words that can make up phrases together with this word.<br>
+                        If the database stores key phrases with these words, they will appear below the related word.<br>
+                    </p>
+                    <p>To view a word and its list of words for phrase formation, as well as some key phrases,
+                        <b>click on the phrase word</b>.</p>
+                    <p>To go back to the main dictionary page with the list of all the words,
+                        click on the <b>"View dictionary"</b> button.</p>
+                    <p>You can also get to the main dictionary page by <b>clicking the header on top</b> of the page.</p>
+                    <p>To edit the word, delete it or add new words that can make up sentences with this word
+                        click on the <b>"Edit word"</b> button.</p>
+                </span>
+            </div>
+            <script src="../../static/popup.js"></script>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <ul class="word">
+        {% for phrase_word in phrasewords %}
+            <li><a href="{{ url_for('dict.view_word', word_id=phrase_word['phraseWordId']) }}" class="link">{{ phrase_word['name'] }}</a></li>
+                <ul>
+                    {% for phrase in phrases %}
+                        {% if phrase_word["name"] in phrase["name"] %}
+                            <li class="phrase">{{ phrase["name"] }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+        {% endfor %}
+    </ul>
+{% endblock %}
