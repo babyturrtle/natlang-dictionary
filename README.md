@@ -13,4 +13,4 @@
 
 ## Пример взаимодействия со словарём:
 
-https://user-images.githubusercontent.com/44346252/114877622-1be74380-9e08-11eb-807a-0d9c4a4a3c48.mp4
+[Video](https://user-images.githubusercontent.com/44346252/114877622-1be74380-9e08-11eb-807a-0d9c4a4a3c48.mp4)
