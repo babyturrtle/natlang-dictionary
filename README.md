@@ -1,4 +1,4 @@
-# ЕЯзИИС ЛР 1
+# ЕЯзИИС ЛР 1 "Разработка автоматизированной системы формирования словаря естественного языка"
 ###### Выполнила: Пантелей А. С., гр. 821704
 
 ### Отчёт: [Google Docs](https://docs.google.com/document/d/1Cz1bmbvf6uIFuWBt5yoaTZTb6476Qx_rg5P6oRzOHiE/edit?usp=sharing)
