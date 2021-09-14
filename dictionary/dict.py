@@ -40,19 +40,7 @@ punctuations = "[].,;\"\'?():_`-"
 lemmatizer = WordNetLemmatizer()
 stopwords = stopwords.words('english')
 chunker = nltk.RegexpParser(grammar)
-'''
-    essential_tokens = [word for word in tokens if word not in stopwords]
-    nltk_tagged = nltk.pos_tag(essential_tokens)
-    wordnet_tagged = map(lambda x: (x[0], nltk_to_wordnet_tag(x[1])), nltk_tagged)
 
-    lemmatized_text = []
-    for word, tag in wordnet_tagged:
-        if tag is None:
-            lemmatized_text.append(word)
-        else:
-            lemmatized_text.append(lemmatizer.lemmatize(word, tag))
-    return lemmatized_text
-'''
 
 """ 
 Fragment functions 
@@ -143,45 +131,6 @@ def phrases_from_text(text):
     return phrases
 
 
-"""
-def add_phrase_words(text):
-     Add links to the words for phrase formation
-        to the word in the dictionary (rel table).
-
-    db = get_db()
-
-    tokens = nltk.regexp_tokenize(text, sentence_re)
-    tagged_tokens = nltk.tag.pos_tag(tokens)
-    tree = chunker.parse(tagged_tokens)
-    terms = get_terms(tree)
-
-    words = (db.execute("SELECT word.id, word.name FROM word ").fetchall())
-    phrases = (db.execute("SELECT phrase.id, phrase.name FROM phrase ").fetchall())
-    phrase_words = []
-
-    for main_word in words:
-        for phrase in phrases:
-            if main_word["name"] in phrase["name"]:
-                for phrasewords in terms:
-                    if main_word["name"] in phrasewords:
-                        for word in phrasewords:
-                            if (word in phrase["name"] and word != main_word["name"] and
-                                    acceptable_word(word) and word not in phrase_words):
-                                phrase_words.append(word)
-                if phrase_words:
-                    for phrase_word in phrase_words:
-                        for word in words:
-                            if phrase_word == word["name"] and phrase_word != main_word["name"]:
-                                phrase_word_id = word["id"]
-                                db.execute(
-                                    "INSERT INTO rel (phraseId, mainWordId, phraseWordId, user_id) VALUES (?, ?, ?, ?)",
-                                    (phrase["id"], main_word["id"], phrase_word_id, g.user["id"]),
-                                )
-                                db.commit()
-    return None
-"""
-
-
 def get_word(word_id, check_user=True):
     """ Get a word from the dictionary by id.
 
@@ -257,32 +206,6 @@ def get_phrase(word_id, phrase_id):
     return phrase
 
 
-'''
-def get_phrase_words(word_id, phrase_id):
-    """ Get the words for phrase formation
-        by the id's of the word and phrase. """
-
-    phrase_words = (
-        get_db()
-        .execute(
-            "SELECT DISTINCT rel.phraseWordId, phrase_word.name, rel.phraseId"
-            " FROM rel"
-            " JOIN word main_word ON rel.mainWordId = main_word.id "
-            " JOIN word phrase_word ON rel.phraseWordId = phrase_word.id"
-            " JOIN phrase ON rel.phraseId = phrase.id"
-            " WHERE rel.mainWordId = ? AND rel.phraseId = ?",
-            (word_id, phrase_id),
-        )
-        .fetchall()
-    )
-
-    if phrase_words is None:
-        abort(404, "Words for phrase formation for word id {0} don't exist.".format(word_id))
-
-    return phrase_words
-'''
-
-
 def get_all_phrase_words(word_id):
     """ Get the words for phrase formation
         by the id's of the word. """
@@ -329,14 +252,7 @@ def view_word(word_id):
     word = get_word(word_id)
     phrases = get_phrases(word_id)
     phrasewords = get_all_phrase_words(word_id)
-    '''
-    phrase_words = []
-    if phrases:
-        for phrase in phrases:
-            phrase_id = phrase["phraseId"]
-            words = get_phrase_words(word_id, phrase_id)
-            phrase_words.append({"phrase_id": phrase_id, "phrase_words": words})
-    '''
+
     return render_template("dictionary/word.html", word=word, phrases=phrases, phrasewords=phrasewords)
 
 
