@@ -12,7 +12,7 @@ The language of the system is English.
 
 ---
 
-#### Commands to run the project:
+### Commands to run the project:
 -  `venv\Scripts\activate`
 -  `set FLASK_APP=dictionary`
 -  `set FLASK_ENV=development`
